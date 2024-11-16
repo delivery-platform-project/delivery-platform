@@ -1,5 +1,6 @@
 package com.example.delivery.user.service;
 
+import com.example.delivery.auth.security.UserDetailsImpl;
 import com.example.delivery.common.Util.PagingUtil;
 import com.example.delivery.common.exception.CustomException;
 import com.example.delivery.common.exception.code.ErrorCode;
@@ -127,5 +128,11 @@ public class UserService {
         user.setStatus(UserStatus.INACTIVE);
         user.setDeletedAt(LocalDateTime.now());
         user.setDeletedBy(deleteBy);
+    }
+
+    public UserResponseDto userDetailInfo(UserDetailsImpl userDetails) {
+        User user = userRepository.findById(userDetails.getUserId())
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ORDER));
+        return new UserResponseDto(user);
     }
 }

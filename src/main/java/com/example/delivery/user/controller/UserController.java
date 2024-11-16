@@ -44,6 +44,15 @@ public class UserController implements UserControllerSwagger {
         return ResponseEntity.ok(responseDto);
     }
 
+    // User 정보 조회
+    @GetMapping("/detail/info")
+    public ResponseEntity<UserResponseDto> userDetailInfo(
+        @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        UserResponseDto userResponseDto = userService.userDetailInfo(userDetails);
+        return ResponseEntity.ok(userResponseDto);
+    }
+
     // 이메일 중복 체크
     @GetMapping("/email/check")
     public ResponseEntity<Boolean> checkEmail(@RequestParam String email) {
