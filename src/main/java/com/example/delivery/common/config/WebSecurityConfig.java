@@ -84,7 +84,7 @@ public class WebSecurityConfig {
             authorizeHttpRequests
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/users/signup").permitAll()
-
+                .requestMatchers("/api/users/email/check").permitAll()
                 // Swagger UI 관련 경로 추가
                 .requestMatchers("/v3/api-docs/**").permitAll()
                 .requestMatchers("/swagger-ui/**").permitAll()
