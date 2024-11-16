@@ -4,6 +4,7 @@ import com.example.delivery.auth.security.UserDetailsImpl;
 import com.example.delivery.common.Util.PagingUtil;
 import com.example.delivery.common.exception.CustomException;
 import com.example.delivery.common.exception.code.ErrorCode;
+import com.example.delivery.review.service.ImageService;
 import com.example.delivery.user.dto.SignupRequestDto;
 import com.example.delivery.user.dto.SignupResponseDto;
 import com.example.delivery.user.dto.UserResponseDto;
@@ -30,14 +31,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    private String processProfileImage(MultipartFile profileImage) {
-        String profileImagePath = null;
-        if (profileImage != null && !profileImage.isEmpty()) {
-            profileImagePath = UUID.randomUUID() + "_" + profileImage.getOriginalFilename();
-        }
-        return profileImagePath;
-    }
+    private final ImageService imageService;
 
     public SignupResponseDto signup(@Valid SignupRequestDto requestDto,
         MultipartFile profileImage) {
@@ -48,7 +42,7 @@ public class UserService {
             throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
         }
 
-        String profileImagePath = processProfileImage(profileImage);
+        String profileImagePath = imageService.uploadProfileImage(profileImage);
 
         User user = User.builder()
             .userName(requestDto.getUserName())
@@ -101,7 +95,7 @@ public class UserService {
             encodePassword = passwordEncoder.encode(requestDto.getPassword());
         }
 
-        String profileImagePath = processProfileImage(profileImage);
+        String profileImagePath = imageService.uploadProfileImage(profileImage);
 
         user.updateUserInfo(
             requestDto.getUserName(),

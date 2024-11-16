@@ -33,6 +33,7 @@ import java.util.*;
 public class ReviewService {
   private final ReviewRepository reviewRepository;
   private final OrderRepository orderRepository;
+  private final ImageService imageService;
 
 
   // 리뷰 등록
@@ -43,7 +44,7 @@ public class ReviewService {
     // 주문이 배달 완료 상태일때 리뷰 등록 가능
     if (order.getOrderStatus().equals(Order.OrderStatus.DELIVERED)) {
       // 파일명 변경
-      String reviewImagePath = uploadReviewImage(reviewImage);
+      String reviewImagePath = imageService.uploadProfileImage(reviewImage);
       Review entity = reviewRegisterRequestDTO.toEntity(userDetails.getUser(), order, reviewImagePath);
       reviewRepository.save(entity);
       return true;
@@ -121,21 +122,12 @@ public class ReviewService {
 
     if (review.getUser().getUserId().equals(userDetails.getUser().getUserId())) {
       User user = userDetails.getUser();
-      String uploadReviewImage = uploadReviewImage(reviewImage);
+      String uploadReviewImage = imageService.uploadProfileImage(reviewImage);
 
       review = reviewRepository.save(reviewEditRequestDTO.toEntity(user, uploadReviewImage, review));
       return new ReviewEditResponseDTO(review);
     }
     throw new CustomException(ErrorCode.REVIEW_NOT_MATCH_USER);
-  }
-
-  // 파일명 변경 (사진 이름 중복 방지)
-  private String uploadReviewImage(MultipartFile reviewImage) {
-    String reviewImagePath = null;
-    if (reviewImage != null) {
-      reviewImagePath = UUID.randomUUID() + "_" + reviewImage.getOriginalFilename();
-    }
-    return reviewImagePath;
   }
 
   // 리뷰 삭제
