@@ -6,6 +6,8 @@ import com.example.delivery.bookmark.repository.BookmarkRepository;
 import com.example.delivery.common.Util.PagingUtil;
 import com.example.delivery.common.exception.CustomException;
 import com.example.delivery.common.exception.code.ErrorCode;
+import com.example.delivery.review.entity.Review;
+import com.example.delivery.review.repository.ReviewRepository;
 import com.example.delivery.store.entity.Store;
 import com.example.delivery.store.repository.StoreRepository;
 import com.example.delivery.user.entity.User;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,6 +28,7 @@ public class BookmarkService {
     private final BookmarkRepository bookmarkRepository;
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
+    private final ReviewRepository reviewRepository;
 
     @Transactional
     public boolean toggleBookmark(UUID storeId, Long userId) {
@@ -57,8 +61,15 @@ public class BookmarkService {
             .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         Pageable pageable = PagingUtil.createPageable(page, size, isAsc, sortBy);
+        Page<List<Review>> reviewList = bookmarkRepository.findAllByUser(user, pageable).map(
+            bookmark -> reviewRepository.findAllByStore(bookmark.getStore())
+        );
+
 
         return bookmarkRepository.findAllByUser(user, pageable)
-            .map(bookmark -> new BookmarkedStoreResponseDto(bookmark.getStore()));
+            .map(bookmark -> {
+                List<Review> reviews = reviewRepository.findAllByStore(bookmark.getStore());
+                return new BookmarkedStoreResponseDto(bookmark.getStore(), reviews);
+            });
     }
 }
