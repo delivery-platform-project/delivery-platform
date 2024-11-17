@@ -72,12 +72,13 @@ public class ReviewService {
       }
     }
 
+
       return reviewList.map(review ->
           ReviewShowResponseDTO.builder()
               .content(review.getContent())
               .starRating(review.getStarRating())
               .createdAt(review.getCreatedAt())
-              .reviewImage(review.getReviewImage())
+              .reviewImage(imageService.getImagePath(review.getReviewImage()))
               .userName(user.getUserName())
               .menuNameList(menuNameMap.get(review.getId()))
               .build());
@@ -104,7 +105,7 @@ public class ReviewService {
             .content(review.getContent())
             .starRating(review.getStarRating())
             .createdAt(review.getCreatedAt())
-            .reviewImage(review.getReviewImage())
+            .reviewImage(imageService.getImagePath(review.getReviewImage()))
             .userName(user.getUserName())
             .menuNameList(menuNameMap.get(review.getId()))
             .build()

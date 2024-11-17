@@ -16,7 +16,7 @@ public class ReviewShowResponseDTO {
   private int starRating;
   private LocalDateTime createdAt;
   private String userName;
-  private String reviewImage;
+  private byte [] reviewImage;
   private List<String> menuNameList;
 
 //  private String storeName;

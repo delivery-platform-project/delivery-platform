@@ -68,13 +68,13 @@ public class UserService {
     public Page<UserResponseDto> getAllUsers(int page, int size, String sortBy, boolean isAsc) {
         Pageable pageable = PagingUtil.createPageable(page, size, isAsc, sortBy);
 
-        return userRepository.findAll(pageable).map(UserResponseDto::new);
+        return userRepository.findAll(pageable).map(user -> new UserResponseDto(user, imageService.getImagePath(user.getProfileImagePath())));
     }
 
     @Transactional(readOnly = true)
     public UserResponseDto getUserById(Long userId) {
         return userRepository.findById(userId)
-            .map(UserResponseDto::new)
+            .map(user -> new UserResponseDto(user, imageService.getImagePath(user.getProfileImagePath())))
             .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
@@ -105,7 +105,7 @@ public class UserService {
             requestDto.getDetailAddress(),
             profileImagePath
         );
-        return new UserResponseDto(user);
+        return new UserResponseDto(user, imageService.getImagePath(user.getProfileImagePath()));
     }
 
     @Transactional
@@ -127,6 +127,6 @@ public class UserService {
     public UserResponseDto userDetailInfo(UserDetailsImpl userDetails) {
         User user = userRepository.findById(userDetails.getUserId())
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ORDER));
-        return new UserResponseDto(user);
+        return new UserResponseDto(user,imageService.getImagePath(user.getProfileImagePath()));
     }
 }

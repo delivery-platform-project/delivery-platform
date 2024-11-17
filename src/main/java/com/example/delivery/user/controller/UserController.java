@@ -1,6 +1,7 @@
 package com.example.delivery.user.controller;
 
 import com.example.delivery.auth.security.UserDetailsImpl;
+import com.example.delivery.review.service.ImageService;
 import com.example.delivery.user.dto.SignupRequestDto;
 import com.example.delivery.user.dto.SignupResponseDto;
 import com.example.delivery.user.dto.UserResponseDto;
@@ -9,7 +10,10 @@ import com.example.delivery.user.repository.UserRepository;
 import com.example.delivery.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,6 +29,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
+
+@Slf4j
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -32,6 +39,7 @@ public class UserController implements UserControllerSwagger {
 
     private final UserService userService;
     private final UserRepository userRepository;
+    private final ImageService imageService;
 
     // User 회원 가입
     @PostMapping("/signup")
@@ -40,7 +48,6 @@ public class UserController implements UserControllerSwagger {
         @RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
         @RequestPart(value = "user", required = true) @Valid SignupRequestDto requestDto) {
         SignupResponseDto responseDto = userService.signup(requestDto, profileImage);
-
         return ResponseEntity.ok(responseDto);
     }
 
@@ -93,8 +100,11 @@ public class UserController implements UserControllerSwagger {
 
         UserResponseDto responseDto = userService.updateUser(userDetails.getUserId(), requestDto,
             profileImage);
-        return ResponseEntity.ok(responseDto);
+        return ResponseEntity.ok()
+            .body(responseDto);
     }
+
+
 
     // Admin -> 유저 수정
     @PutMapping("/admin/{userId}")

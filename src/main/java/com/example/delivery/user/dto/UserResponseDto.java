@@ -17,11 +17,12 @@ public class UserResponseDto {
     private String detailAddress;
     private String phoneNum;
     private UserRoleEnum role;
+    private byte[] profileImage;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private LocalDateTime deletedAt;
 
-    public UserResponseDto(User user) {
+    public UserResponseDto(User user, byte[] profileImage) {
         this.userId = user.getUserId();
         this.userName = user.getUserName();
         this.email = user.getEmail();
@@ -29,6 +30,7 @@ public class UserResponseDto {
         this.detailAddress = user.getDetailAddress();
         this.phoneNum = user.getPhoneNum();
         this.role = user.getRole();
+        this.profileImage = profileImage;
         this.createdAt = user.getCreatedAt();
         this.modifiedAt = user.getUpdatedAt();
         this.deletedAt = user.getDeletedAt();
