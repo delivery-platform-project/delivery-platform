@@ -45,7 +45,7 @@ public class ImageService {
   // 실제 저장된 이미지 경로
   public FileResponseDTO getImagePath(String profileImagePath) {
     if (profileImagePath == null || profileImagePath.isEmpty()) {
-      return null;
+      return new FileResponseDTO(null, null);
     }
     String filePath = uploadRootPath + "/" + profileImagePath;
     MediaType extensionAndGetMediaType = findExtensionAndGetMediaType(filePath);
