@@ -63,9 +63,13 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
 	testImplementation 'com.h2database:h2'
-	testCompileOnly 'org.projectlombok:lombok'
-	testAnnotationProcessor 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+	// Lombok 의존성 추가
+	compileOnly 'org.projectlombok:lombok:1.18.22' // 최신 버전 사용
+	annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+	// 테스트에서 Lombok 사용
+	testCompileOnly 'org.projectlombok:lombok:1.18.22'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 }
 
 tasks.named('test') {
