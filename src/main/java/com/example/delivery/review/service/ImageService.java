@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.UUID;
 
 @Service
@@ -53,7 +54,11 @@ public class ImageService {
     try {
       byte[] fileByte = FileCopyUtils.copyToByteArray(filePathFile);
 
-      return new FileResponseDTO(fileByte, extensionAndGetMediaType);
+      // byte[] 데이터를 Base64로 인코딩
+      String base64EncodedImage = Base64.getEncoder().encodeToString(fileByte);
+
+      // Base64로 인코딩된 이미지 데이터와 미디어 타입 반환
+      return new FileResponseDTO(base64EncodedImage, extensionAndGetMediaType);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

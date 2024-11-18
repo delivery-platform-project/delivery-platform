@@ -11,6 +11,6 @@ import org.springframework.http.MediaType;
 @AllArgsConstructor
 @Builder
 public class FileResponseDTO {
-  private byte [] fileByte;
+  private String base64EncodedImage;
   private MediaType extensionAndGetMediaType;
 }

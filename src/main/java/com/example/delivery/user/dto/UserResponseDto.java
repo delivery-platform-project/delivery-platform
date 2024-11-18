@@ -18,7 +18,7 @@ public class UserResponseDto {
     private String detailAddress;
     private String phoneNum;
     private UserRoleEnum role;
-    private byte[] profileImage;
+    private String profileImage;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private LocalDateTime deletedAt;
@@ -32,7 +32,7 @@ public class UserResponseDto {
         this.detailAddress = user.getDetailAddress();
         this.phoneNum = user.getPhoneNum();
         this.role = user.getRole();
-        this.profileImage = profileImage.getFileByte();
+        this.profileImage = profileImage.getBase64EncodedImage();
         this.createdAt = user.getCreatedAt();
         this.modifiedAt = user.getUpdatedAt();
         this.deletedAt = user.getDeletedAt();

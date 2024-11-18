@@ -18,7 +18,7 @@ public class ReviewEditResponseDTO {
   private int starRating;
   private LocalDateTime updatedAt;
   private String userName;
-  private byte[] reviewImage;
+  private String reviewImage;
   private MediaType extensionAndGetMediaType;
 
   public ReviewEditResponseDTO(Review review, FileResponseDTO reviewImagePath) {
@@ -26,7 +26,7 @@ public class ReviewEditResponseDTO {
     this.starRating = review.getStarRating();
     this.updatedAt = review.getUpdatedAt();
     this.userName = review.getUser().getUserName();
-    this.reviewImage = reviewImagePath.getFileByte();
+    this.reviewImage = reviewImagePath.getBase64EncodedImage();
     this.extensionAndGetMediaType = reviewImagePath.getExtensionAndGetMediaType();
   }
 }
