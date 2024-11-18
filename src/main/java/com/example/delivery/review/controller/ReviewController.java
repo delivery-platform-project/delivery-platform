@@ -10,6 +10,7 @@ import com.example.delivery.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -48,7 +49,8 @@ public class ReviewController {
                                       @RequestParam("isAsc") boolean isAsc,
                                       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     Page<ReviewShowResponseDTO> reviewShowResponseDTO = reviewService.reviewShow(storeId, page - 1, size, sortBy, isAsc, userDetails);
-    return ResponseEntity.ok().body(reviewShowResponseDTO);
+    return ResponseEntity.ok()
+        .body(reviewShowResponseDTO);
   }
   // 내 리뷰 조회
   @GetMapping("/myReview")
@@ -60,7 +62,8 @@ public class ReviewController {
       @RequestParam("isAsc") boolean isAsc,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     Page<ReviewListResponseDTO> reviewListResponseDTOS = reviewService.myReview(page - 1, size, sortBy, isAsc, userDetails);
-    return ResponseEntity.ok().body(reviewListResponseDTOS);
+    return ResponseEntity.ok()
+        .body(reviewListResponseDTOS);
   }
 
   // 내 리뷰 수정
@@ -72,7 +75,8 @@ public class ReviewController {
       @RequestPart(value = "reviewImage", required = false) MultipartFile reviewImage,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     ReviewEditResponseDTO reviewEditResponseDTO = reviewService.reviewEdit(reviewEditRequestDTO, reviewImage, userDetails, reviewId);
-    return ResponseEntity.ok().body(reviewEditResponseDTO);
+    return ResponseEntity.ok()
+        .body(reviewEditResponseDTO);
   }
 
   // 내 리뷰 삭제

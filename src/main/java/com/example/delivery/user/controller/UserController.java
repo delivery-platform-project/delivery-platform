@@ -57,7 +57,8 @@ public class UserController implements UserControllerSwagger {
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         UserResponseDto userResponseDto = userService.userDetailInfo(userDetails);
-        return ResponseEntity.ok(userResponseDto);
+        return ResponseEntity.ok()
+            .body(userResponseDto);
     }
 
     // 이메일 중복 체크
@@ -78,7 +79,8 @@ public class UserController implements UserControllerSwagger {
         @RequestParam(defaultValue = "true") boolean isAsc) {
         Page<UserResponseDto> users = userService.getAllUsers(page, size, sortBy, isAsc);
 
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok()
+            .body(users);
     }
 
     // Admin -> 회원 단일 조회
@@ -87,7 +89,8 @@ public class UserController implements UserControllerSwagger {
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable("userId") Long userId) {
         UserResponseDto userResponseDto = userService.getUserById(userId);
 
-        return ResponseEntity.ok(userResponseDto);
+        return ResponseEntity.ok()
+            .body(userResponseDto);
     }
 
     // 자신의 계정 수정
@@ -115,7 +118,8 @@ public class UserController implements UserControllerSwagger {
         @PathVariable Long userId) {
 
         UserResponseDto responseDto = userService.updateUser(userId, requestDto, profileImage);
-        return ResponseEntity.ok(responseDto);
+        return ResponseEntity.ok()
+            .body(responseDto);
     }
 
     // 자신의 계정 삭제

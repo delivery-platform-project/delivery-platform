@@ -1,11 +1,12 @@
 package com.example.delivery.user.dto;
 
+import com.example.delivery.review.dto.response.FileResponseDTO;
 import com.example.delivery.user.entity.User;
 import com.example.delivery.user.entity.UserRoleEnum;
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
+
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import org.springframework.http.MediaType;
 
 @Getter
 public class UserResponseDto {
@@ -21,8 +22,9 @@ public class UserResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private LocalDateTime deletedAt;
+    private MediaType extensionAndGetMediaType;
 
-    public UserResponseDto(User user, byte[] profileImage) {
+    public UserResponseDto(User user, FileResponseDTO profileImage) {
         this.userId = user.getUserId();
         this.userName = user.getUserName();
         this.email = user.getEmail();
@@ -30,9 +32,10 @@ public class UserResponseDto {
         this.detailAddress = user.getDetailAddress();
         this.phoneNum = user.getPhoneNum();
         this.role = user.getRole();
-        this.profileImage = profileImage;
+        this.profileImage = profileImage.getFileByte();
         this.createdAt = user.getCreatedAt();
         this.modifiedAt = user.getUpdatedAt();
         this.deletedAt = user.getDeletedAt();
+        this.extensionAndGetMediaType = profileImage.getExtensionAndGetMediaType();
     }
 }

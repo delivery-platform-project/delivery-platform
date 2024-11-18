@@ -1,6 +1,7 @@
 package com.example.delivery.review.dto.response;
 
 import lombok.*;
+import org.springframework.http.MediaType;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,8 +17,7 @@ public class ReviewShowResponseDTO {
   private int starRating;
   private LocalDateTime createdAt;
   private String userName;
-  private byte [] reviewImage;
+  private byte[] reviewImage;
   private List<String> menuNameList;
-
-//  private String storeName;
+  private MediaType extensionAndGetMediaType;
 }

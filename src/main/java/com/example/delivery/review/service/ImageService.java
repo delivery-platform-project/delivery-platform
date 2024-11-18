@@ -1,9 +1,9 @@
 package com.example.delivery.review.service;
 
+import com.example.delivery.review.dto.response.FileResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
@@ -11,10 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Base64;
 import java.util.UUID;
 
 @Service
@@ -47,11 +43,14 @@ public class ImageService {
   }
 
   // 실제 저장된 이미지 경로
-  public byte[] getImagePath(String profileImagePath) {
+  public FileResponseDTO getImagePath(String profileImagePath) {
     String filePath = uploadRootPath + "/" + profileImagePath;
+    MediaType extensionAndGetMediaType = findExtensionAndGetMediaType(filePath);
     File filePathFile = new File(filePath);
     try {
-      return FileCopyUtils.copyToByteArray(filePathFile);
+      byte[] fileByte = FileCopyUtils.copyToByteArray(filePathFile);
+
+      return new FileResponseDTO(fileByte, extensionAndGetMediaType);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

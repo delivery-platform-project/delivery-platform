@@ -8,6 +8,7 @@ import com.example.delivery.common.exception.code.ErrorCode;
 import com.example.delivery.order.entity.Order;
 import com.example.delivery.order.repository.OrderRepository;
 import com.example.delivery.review.dto.request.ReviewEditRequestDTO;
+import com.example.delivery.review.dto.response.FileResponseDTO;
 import com.example.delivery.review.dto.response.ReviewEditResponseDTO;
 import com.example.delivery.review.dto.response.ReviewListResponseDTO;
 import com.example.delivery.review.dto.request.ReviewRegisterRequestDTO;
@@ -78,7 +79,8 @@ public class ReviewService {
               .content(review.getContent())
               .starRating(review.getStarRating())
               .createdAt(review.getCreatedAt())
-              .reviewImage(imageService.getImagePath(review.getReviewImage()))
+              .reviewImage(imageService.getImagePath(review.getReviewImage()).getFileByte())
+              .extensionAndGetMediaType(imageService.getImagePath(review.getReviewImage()).getExtensionAndGetMediaType())
               .userName(user.getUserName())
               .menuNameList(menuNameMap.get(review.getId()))
               .build());
@@ -105,9 +107,10 @@ public class ReviewService {
             .content(review.getContent())
             .starRating(review.getStarRating())
             .createdAt(review.getCreatedAt())
-            .reviewImage(imageService.getImagePath(review.getReviewImage()))
+            .reviewImage(imageService.getImagePath(review.getReviewImage()).getFileByte())
             .userName(user.getUserName())
             .menuNameList(menuNameMap.get(review.getId()))
+            .extensionAndGetMediaType(imageService.getImagePath(review.getReviewImage()).getExtensionAndGetMediaType())
             .build()
     );
   }
@@ -126,7 +129,8 @@ public class ReviewService {
       String uploadReviewImage = imageService.uploadProfileImage(reviewImage);
 
       review = reviewRepository.save(reviewEditRequestDTO.toEntity(user, uploadReviewImage, review));
-      return new ReviewEditResponseDTO(review);
+      FileResponseDTO imagePath = imageService.getImagePath(review.getReviewImage());
+      return new ReviewEditResponseDTO(review, imagePath);
     }
     throw new CustomException(ErrorCode.REVIEW_NOT_MATCH_USER);
   }
